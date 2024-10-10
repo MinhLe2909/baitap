@@ -1,4 +1,4 @@
-package BTVN_ATM;
+package Ontap.baitapATM;
 
 public class Account {
     private String username;
@@ -15,21 +15,32 @@ public class Account {
         return username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public String getPassword() {
         return password;
     }
 
-        public double getBalance() {
-            return balance;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public void withdraw(double amount) {
-        if (amount <= balance) {
-            balance -= amount;
-            System.out.println("Bạn đã rút " + amount + " VNĐ vào lúc " + java.time.LocalDateTime.now());
-            System.out.println("Số dư hiện tại của bạn là: "+balance);
-        } else {
-            System.out.println("Số dư không đủ để rút.");
-        }
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", balance=" + balance +
+                '}';
     }
 }
