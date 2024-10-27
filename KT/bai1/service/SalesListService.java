@@ -9,11 +9,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class SalesListService {
-    private ArrayList<SalesList> salesLists = new ArrayList<>();
-    private ArrayList<Item> soldItems = new ArrayList<>();
+    ArrayList<SalesList> salesLists = new ArrayList<>();
 
     public SalesList createSalesList(Scanner scanner, ArrayList<SalesPerson> salesPersons, ArrayList<Item> items) {
-        if (salesPersons.isEmpty() || items.isEmpty()) { // check tt rỗng
+        if (salesPersons.isEmpty() || items.isEmpty()) {
             System.out.println("Cần nhập danh sách nhân viên và mặt hàng trước.");
             return null;
         }
@@ -25,6 +24,7 @@ public class SalesListService {
         int index = Integer.parseInt(scanner.nextLine()) - 1;
         SalesPerson selectedPerson = salesPersons.get(index);
 
+        // Tạo SalesList mới cho nhân viên đã chọn
         SalesList salesList = new SalesList(selectedPerson);
         System.out.println("Nhập số lượng mặt hàng đã bán (tối đa 5): ");
         int count = Integer.parseInt(scanner.nextLine());
@@ -36,27 +36,30 @@ public class SalesListService {
             }
             int itemIndex = Integer.parseInt(scanner.nextLine()) - 1;
             Item item = items.get(itemIndex);
-            addSoldItem(item);
+
+            // Gọi phương thức addSoldItem để thêm vào SalesList
+            addSoldItem(salesList, item);
         }
 
+        // Thêm SalesList vào danh sách và hiển thị kết quả
         salesLists.add(salesList);
         System.out.println("Đã thêm bảng danh sách bán hàng.");
         System.out.println(salesList);
         return salesList;
     }
 
-
-    public void addSoldItem(Item item) {
+    public void addSoldItem(SalesList salesList, Item item) {
         // Kiểm tra nếu mặt hàng đã tồn tại trong danh sách
-        for (Item soldItem : soldItems) {
+        for (Item soldItem : salesList.getSoldItems()) {
             if (soldItem.getItemId() == item.getItemId()) {
                 System.out.println("Mặt hàng đã được bán, không thể bán 2 lần.");
                 return;
             }
         }
-        soldItems.add(item);
+        // Nếu mặt hàng chưa tồn tại, thêm vào danh sách bán
+        salesList.getSoldItems().add(item);
+        System.out.println("Đã thêm mặt hàng vào danh sách bán.");
     }
-
 
     public double calculateTotalRevenue() {
         double totalRevenue = 0;
@@ -77,5 +80,6 @@ public class SalesListService {
         // Trả về tổng doanh thu
         return totalRevenue;
     }
+
 
 }
